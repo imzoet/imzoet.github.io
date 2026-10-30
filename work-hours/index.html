@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>工时提交器</title>
+<style>
+:root{--bg:#f5f7fb;--panel:#fff;--ink:#182230;--muted:#718096;--line:#e7ebf2;--blue:#4776e6;--green:#16a085;--orange:#f39c45;--red:#e76f76;--shadow:0 8px 28px rgba(31,48,80,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+main{max-width:1120px;margin:36px auto;padding:0 22px 50px}.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:24px}.eyebrow{color:var(--blue);font-weight:700;font-size:12px;letter-spacing:1.5px}.top h1{font-size:30px;margin:4px 0 0}.sub{color:var(--muted);margin-top:5px}.monthbox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;box-shadow:var(--shadow)}input,textarea,button{font:inherit}input[type=month]{border:0;color:var(--ink);font-weight:650;background:transparent;outline:none}
+.grid{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}.panel h2{font-size:17px;margin:0 0 16px}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{padding:15px;background:#f7f9fd;border-radius:13px}.stat small{display:block;color:var(--muted);margin-bottom:5px}.stat strong{font-size:26px;letter-spacing:-.5px}.stat em{font-size:13px;font-style:normal;color:var(--muted);margin-left:4px}
+.holiday{margin-top:16px}.holiday label,.fieldlabel{font-size:13px;color:#536174;font-weight:650;display:block;margin-bottom:7px}.holiday textarea{width:100%;min-height:78px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none}.hint{font-size:12px;color:var(--muted);margin-top:6px}
+.project-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.btn{border:0;border-radius:10px;padding:9px 13px;background:#edf2ff;color:#315ecb;font-weight:650;cursor:pointer}.btn.primary{background:var(--blue);color:white}.btn:hover{filter:brightness(.97)}
+.addrow{display:flex;gap:8px;margin:14px 0 18px}.addrow input{min-width:0;flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none}.addrow input:focus,.holiday textarea:focus{border-color:#9bb3f5}
+.summarybar{height:15px;border-radius:99px;background:#eef1f6;overflow:hidden;display:flex;margin:8px 0 16px}.seg{height:100%;min-width:0;transition:width .12s}.totals{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-bottom:12px}.totals strong{color:var(--ink)}
+.projects{display:flex;flex-direction:column;gap:12px}.project{border:1px solid var(--line);border-radius:13px;padding:13px 14px}.projecttop{display:flex;align-items:center;gap:10px}.dot{width:10px;height:10px;border-radius:50%;flex:none}.code{font-weight:700;flex:1;overflow-wrap:anywhere}.hours{width:88px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;text-align:right;font-weight:700}.unit{font-size:12px;color:var(--muted);margin-left:-5px}.remove{border:0;background:transparent;color:#a0a8b5;cursor:pointer;font-size:19px;padding:0 3px}.remove:hover{color:var(--red)}input[type=range]{width:100%;margin:11px 0 0;accent-color:var(--blue);cursor:grab}input[type=range]:active{cursor:grabbing}
+.bottom{display:grid;grid-template-columns:250px 1fr;gap:18px;margin-top:18px}.chartwrap{display:flex;align-items:center;justify-content:center;min-height:220px}.legend{display:flex;flex-direction:column;gap:8px}.legendrow{display:flex;align-items:center;gap:8px;font-size:13px}.legendrow .name{flex:1;overflow-wrap:anywhere}.legendrow b{font-variant-numeric:tabular-nums}
+.output{width:100%;min-height:180px;border:1px solid var(--line);border-radius:11px;padding:13px;background:#fafbfd;font:14px/1.9 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical;white-space:pre;outline:none}.outactions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}.status{font-size:13px;color:var(--muted)}.warning{color:#c56b22}.empty{color:var(--muted);text-align:center;padding:22px 8px;font-size:13px}
+@media(max-width:760px){main{margin:20px auto}.top{align-items:flex-start;flex-direction:column}.grid,.bottom{grid-template-columns:1fr}.panel{padding:17px}.top h1{font-size:26px}}
+</style>
+</head>
+<body>
+<main>
+ <div class="top">
+  <div><div class="eyebrow">WORKLOG · MONTHLY</div><h1>工时提交器</h1><div class="sub">先计算当月可提交工时，再把工时分配到各个项目。</div></div>
+  <div class="monthbox"><input id="month" type="month"></div>
+ </div>
+ <section class="grid">
+  <div class="panel">
+   <h2>本月工时统计</h2>
+   <div class="stats">
+    <div class="stat"><small>工作日</small><strong id="days">—</strong><em>天</em></div>
+    <div class="stat"><small>应提交工时</small><strong id="capacity">—</strong><em>小时</em></div>
+    <div class="stat"><small>周末</small><strong id="weekends">—</strong><em>天</em></div>
+    <div class="stat"><small>节假日</small><strong id="holidaysCount">—</strong><em>天</em></div>
+   </div>
+   <div class="holiday">
+    <label for="holidays">节假日 / 调休休息日（每行一个日期）</label>
+    <textarea id="holidays" placeholder="例如：&#10;2026-10-01&#10;2026-10-02"></textarea>
+    <div class="hint">周末自动排除；法定节假日已预置，可按实际情况修改。日期仅保存在当前浏览器。</div>
+    <label for="workdays" style="margin-top:12px">调休上班日（每行一个日期）</label>
+    <textarea id="workdays" placeholder="例如：&#10;2026-10-10"></textarea>
+    <div class="hint">这里填写因调休需要正常上班的周末日期。</div>
+   </div>
+  </div>
+  <div class="panel">
+   <div class="project-head"><h2>项目工时分配</h2><span class="status" id="projectCount">0 个项目</span></div>
+   <div class="addrow"><input id="newCode" placeholder="输入项目号，例如 26RD006"><button class="btn primary" id="add">添加项目</button></div>
+   <div class="totals"><span>已分配 <strong id="assigned">0h</strong></span><span>剩余 <strong id="remaining">0h</strong></span></div>
+   <div class="summarybar" id="bar"></div>
+   <div class="projects" id="projects"></div>
+   <div class="hint">拖动每个项目下方的滑块，或直接修改小时数。所有项目分配总和必须恰好等于应提交工时，才能复制。</div>
+  </div>
+ </section>
+ <section class="bottom">
+  <div class="panel"><h2>分配占比</h2><div class="chartwrap"><svg id="donut" viewBox="0 0 220 220" width="210" height="210" role="img" aria-label="项目工时分配环形图"></svg></div><div class="legend" id="legend"></div></div>
+  <div class="panel"><h2>提交文案</h2><textarea class="output" id="output" readonly spellcheck="false"></textarea><div class="outactions"><span class="status" id="outputStatus">自动按项目号和工时生成</span><button class="btn primary" id="copy">复制提交文案</button></div></div>
+ </section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const colors=['#4776e6','#16a085','#f39c45','#8e6bd8','#e76f76','#39a6c8','#8a9b3f','#d17bba','#63738a','#c18b45'];
+let projects=[];
+const today=new Date();
+$('month').value=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
+const holidayDates2026=[
+'2026-01-01','2026-01-02','2026-01-03',
+'2026-02-15','2026-02-16','2026-02-17','2026-02-18','2026-02-19','2026-02-20','2026-02-21','2026-02-22','2026-02-23',
+'2026-04-04','2026-04-05','2026-04-06',
+'2026-05-01','2026-05-02','2026-05-03','2026-05-04','2026-05-05',
+'2026-06-19','2026-06-20','2026-06-21',
+'2026-09-25','2026-09-26','2026-09-27',
+'2026-10-01','2026-10-02','2026-10-03','2026-10-04','2026-10-05','2026-10-06','2026-10-07'
+];
+const makeupDates2026=['2026-01-04','2026-02-14','2026-02-28','2026-05-09','2026-09-20','2026-10-10'];
+const savedH=localStorage.getItem('worklog_holidays');
+const savedW=localStorage.getItem('worklog_makeup');
+$('holidays').value=savedH!==null?savedH:holidayDates2026.join('\n');
+$('workdays').value=savedW!==null?savedW:makeupDates2026.join('\n');
+function dateSet(id){return new Set($(id).value.split(/\s+/).map(s=>s.trim()).filter(s=>/^\d{4}-\d{2}-\d{2}$/.test(s)));}
+function calc(){
+ const [y,m]=$('month').value.split('-').map(Number);if(!y||!m)return;
+ const days=new Date(y,m,0).getDate(),hs=dateSet('holidays'),ws=dateSet('workdays');
+ let work=0,weekend=0,holiday=0;
+ for(let d=1;d<=days;d++){
+  const date=new Date(y,m-1,d),key=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const isWeekend=date.getDay()===0||date.getDay()===6;
+  if(ws.has(key))work++;
+  else if(hs.has(key))holiday++;
+  else if(isWeekend)weekend++;
+  else work++;
+ }
+ $('days').textContent=work;$('capacity').textContent=work*8;$('weekends').textContent=weekend;$('holidaysCount').textContent=holiday;
+ render();
+}
+function addProject(code){
+ code=code.trim();if(!code)return;
+ if(projects.some(p=>p.code===code)){alert('这个项目号已经添加');return;}
+ projects.push({id:Date.now()+Math.random(),code,hours:0});render();
+}
+function setHours(id,val){
+ const p=projects.find(x=>x.id===id);if(!p)return;
+ const cap=Number($('capacity').textContent)||0;
+ const others=projects.reduce((s,x)=>s+(x.id===id?0:x.hours),0);
+ const maxForThis=Math.max(0,cap-others);
+ p.hours=Math.max(0,Math.min(maxForThis,Math.round((Number(val)||0)*100)/100));
+ render();
+}
+function render(){
+ const cap=Number($('capacity').textContent)||0,assigned=projects.reduce((s,p)=>s+p.hours,0);
+ const remaining=Math.max(0,cap-assigned),complete=Math.abs(assigned-cap)<0.001;
+ $('assigned').textContent=fmt(assigned)+'h';$('remaining').textContent=fmt(remaining)+'h';
+ $('remaining').className=remaining>0?'warning':'';
+ $('projectCount').textContent=projects.length+' 个项目';
+ $('projects').innerHTML='';
+ if(!projects.length)$('projects').innerHTML='<div class="empty">还没有项目，先添加一个项目号</div>';
+ projects.forEach((p,i)=>{
+  const c=colors[i%colors.length],wrap=document.createElement('div');wrap.className='project';
+  const maxForThis=Math.max(p.hours,cap-(assigned-p.hours));
+  wrap.innerHTML=`<div class="projecttop"><span class="dot" style="background:${c}"></span><span class="code"></span><input class="hours" type="number" min="0" max="${maxForThis}" step="0.5" value="${p.hours}" aria-label="项目工时"><span class="unit">h</span><button class="remove" title="删除项目" aria-label="删除项目">×</button></div><input type="range" min="0" max="${Math.max(maxForThis,0.01)}" step="0.5" value="${p.hours}" aria-label="拖动分配工时">`;
+  wrap.querySelector('.code').textContent=p.code;
+  wrap.querySelector('.hours').addEventListener('change',e=>setHours(p.id,e.target.value));
+  wrap.querySelector('input[type=range]').addEventListener('input',e=>setHours(p.id,e.target.value));
+  wrap.querySelector('.remove').addEventListener('click',()=>{projects=projects.filter(x=>x.id!==p.id);render();});
+  $('projects').appendChild(wrap);
+ });
+ $('bar').innerHTML='';
+ projects.forEach((p,i)=>{if(p.hours<=0||cap<=0)return;const s=document.createElement('div');s.className='seg';s.style.width=(p.hours/cap*100)+'%';s.style.background=colors[i%colors.length];$('bar').appendChild(s);});
+ drawDonut(assigned);makeOutput();
+ $('outputStatus').textContent=complete?'工时已严格分配完成，可以复制':'尚差 '+fmt(remaining)+'h，必须分配完毕才能复制';
+ $('copy').disabled=!complete||projects.filter(p=>p.hours>0).length===0;
+ $('copy').style.opacity=$('copy').disabled?'.45':'1';
+}
+function fmt(n){return Number(n.toFixed(2)).toString();}
+function drawDonut(total){
+ const svg=$('donut');svg.innerHTML='';const ns='http://www.w3.org/2000/svg';
+ function el(tag,attrs){const e=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));svg.appendChild(e);return e;}
+ el('circle',{cx:110,cy:110,r:76,fill:'none',stroke:'#edf0f5','stroke-width':24});
+ const circumference=2*Math.PI*76;let offset=0;
+ projects.forEach((p,i)=>{if(p.hours<=0||total<=0)return;const len=(p.hours/total)*circumference;
+  el('circle',{cx:110,cy:110,r:76,fill:'none',stroke:colors[i%colors.length],'stroke-width':24,'stroke-dasharray':`${Math.max(0,len-2)} ${circumference}`,'stroke-dashoffset':-offset,transform:'rotate(-90 110 110)'});
+  offset+=len;
+ });
+ const t=document.createElementNS(ns,'text');t.setAttribute('x','110');t.setAttribute('y','105');t.setAttribute('text-anchor','middle');t.setAttribute('font-size','25');t.setAttribute('font-weight','700');t.setAttribute('fill','#182230');t.textContent=fmt(total);svg.appendChild(t);
+ const sub=document.createElementNS(ns,'text');sub.setAttribute('x','110');sub.setAttribute('y','128');sub.setAttribute('text-anchor','middle');sub.setAttribute('font-size','11');sub.setAttribute('fill','#718096');sub.textContent='已分配小时';svg.appendChild(sub);
+ $('legend').innerHTML='';
+ projects.forEach((p,i)=>{if(!p.hours)return;const r=document.createElement('div');r.className='legendrow';r.innerHTML=`<span class="dot" style="background:${colors[i%colors.length]}"></span><span class="name"></span><b>${fmt(p.hours)}h</b>`;r.querySelector('.name').textContent=p.code;$('legend').appendChild(r);});
+ if(!projects.some(p=>p.hours>0))$('legend').innerHTML='<div class="empty">分配工时后显示占比</div>';
+}
+function makeOutput(){
+ const sorted=[...projects].filter(p=>p.hours>0).sort((a,b)=>a.code.localeCompare(b.code,'zh'));
+ $('output').value=sorted.map(p=>`${p.code}\t${fmt(p.hours)}h`).join('\n');
+}
+$('add').addEventListener('click',()=>{addProject($('newCode').value);$('newCode').value='';$('newCode').focus();});
+$('newCode').addEventListener('keydown',e=>{if(e.key==='Enter')$('add').click();});
+$('month').addEventListener('change',calc);
+$('holidays').addEventListener('input',()=>{localStorage.setItem('worklog_holidays',$('holidays').value);calc();});
+$('workdays').addEventListener('input',()=>{localStorage.setItem('worklog_makeup',$('workdays').value);calc();});
+$('copy').addEventListener('click',async()=>{
+ const cap=Number($('capacity').textContent)||0,assigned=projects.reduce((s,p)=>s+p.hours,0);
+ if(Math.abs(cap-assigned)>=0.001){alert('工时未完全分配，不能复制。');return;}
+ try{await navigator.clipboard.writeText($('output').value);$('outputStatus').textContent='已复制到剪贴板';}
+ catch(e){$('output').select();document.execCommand('copy');$('outputStatus').textContent='已复制到剪贴板';}
+});
+calc();
+</script>
+</body>
+</html>
