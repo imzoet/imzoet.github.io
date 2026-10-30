@@ -6,18 +6,18 @@
 <style>
 :root{--bg:#f5f7fb;--panel:#fff;--ink:#182230;--muted:#718096;--line:#e7ebf2;--blue:#4776e6;--shadow:0 8px 28px rgba(31,48,80,.07)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
-main{max-width:1120px;margin:36px auto;padding:0 22px 50px}.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:24px}.eyebrow{color:var(--blue);font-weight:700;font-size:12px;letter-spacing:1.5px}.top h1{font-size:30px;margin:4px 0 0}.sub{color:var(--muted);margin-top:5px}.monthbox,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.monthbox{padding:10px 14px}input,textarea,button{font:inherit}input[type=month]{border:0;font-weight:650;background:transparent;outline:none;color:var(--ink)}
+main{max-width:1120px;margin:36px auto;padding:0 22px 50px}.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:24px}.eyebrow{color:var(--blue);font-weight:700;font-size:12px;letter-spacing:1.5px}.version{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:99px;background:#eaf0ff;color:#315ecb;font-size:10px;letter-spacing:.4px;vertical-align:1px}.top h1{font-size:30px;margin:4px 0 0}.sub{color:var(--muted);margin-top:5px}.monthbox,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.monthbox{padding:10px 14px}input,textarea,button{font:inherit}input[type=month]{border:0;font-weight:650;background:transparent;outline:none;color:var(--ink)}
 .grid{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}.panel{padding:22px}.panel h2{font-size:17px;margin:0 0 16px}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{padding:15px;background:#f7f9fd;border-radius:12px}.stat small{display:block;color:var(--muted);margin-bottom:5px}.stat strong{font-size:26px}.stat em{font-size:13px;font-style:normal;color:var(--muted);margin-left:4px}
 .fieldlabel{font-size:13px;color:#536174;font-weight:650;display:block;margin:12px 0 7px}.holiday textarea{width:100%;min-height:66px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none}.hint{font-size:12px;color:var(--muted);margin-top:6px}.override{display:flex;align-items:center;gap:9px;margin-top:15px;padding:12px;background:#f7f9fd;border-radius:11px}.override label{font-size:13px;font-weight:650;flex:1}.override input{width:92px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;text-align:right}
 .project-head,.projecttop,.totals,.outactions{display:flex;align-items:center;justify-content:space-between;gap:10px}.btn{border:0;border-radius:10px;padding:9px 13px;background:#edf2ff;color:#315ecb;font-weight:650;cursor:pointer}.btn.primary{background:var(--blue);color:#fff}.addrow{display:flex;gap:8px;margin:14px 0 18px}.addrow input{min-width:0;flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none}
 .totals{color:var(--muted);font-size:13px;margin-bottom:10px}.totals strong{color:var(--ink)}.summarybar{height:13px;border-radius:99px;background:#eef1f6;overflow:hidden;display:flex;margin:8px 0 16px}.seg{height:100%;min-width:0}
-.projects{display:flex;flex-direction:column;gap:12px}.project{border:1px solid var(--line);border-radius:13px;padding:13px 14px}.dot{width:10px;height:10px;border-radius:50%;flex:none}.code{font-weight:700;overflow-wrap:anywhere}.alias{font-size:12px;color:#718096;margin:3px 0 0 20px}.projectmeta{display:flex;align-items:center;gap:9px}.hours{font-size:18px;font-weight:750;white-space:nowrap}.hours small{font-size:12px;color:var(--muted);font-weight:500}.remove{border:0;background:transparent;color:#a0a8b5;cursor:pointer;font-size:19px}.project input[type=range]{width:100%;margin:11px 0 0;accent-color:var(--blue);cursor:grab}.sliderfoot{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
+.projects{display:flex;flex-direction:column;gap:12px}.project{border:1px solid var(--line);border-radius:13px;padding:13px 14px}.dot{width:10px;height:10px;border-radius:50%;flex:none}.code{font-weight:700;overflow-wrap:anywhere}.alias{font-size:12px;color:#718096;margin:3px 0 0 20px}.projectmeta{display:flex;align-items:center;gap:9px}.hours{font-size:18px;font-weight:750;white-space:nowrap}.hours small{font-size:12px;color:var(--muted);font-weight:500}.remove{border:0;background:transparent;color:#a0a8b5;cursor:pointer;font-size:19px}.project input[type=range]{width:100%;margin:11px 0 0;accent-color:var(--blue);cursor:grab}.sliderfoot{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.adjust{display:flex;align-items:center;gap:5px}.adjust button{width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:#f8faff;color:#315ecb;font-weight:750;cursor:pointer}.adjust button:disabled{opacity:.35;cursor:not-allowed}.hours{min-width:58px;text-align:right}
 .bottom{display:grid;grid-template-columns:250px 1fr;gap:18px;margin-top:18px}.chartwrap{display:flex;align-items:center;justify-content:center;min-height:220px}.legend{display:flex;flex-direction:column;gap:8px}.legendrow{display:flex;align-items:center;gap:8px;font-size:13px}.legendrow .name{flex:1;overflow-wrap:anywhere}.output{width:100%;min-height:180px;border:1px solid var(--line);border-radius:11px;padding:13px;background:#fafbfd;font:14px/1.9 ui-monospace,Consolas,monospace;resize:vertical;white-space:pre;outline:none}.status{font-size:13px;color:var(--muted)}.empty{color:var(--muted);text-align:center;padding:22px 8px;font-size:13px}
 @media(max-width:760px){main{margin:20px auto}.top{align-items:flex-start;flex-direction:column}.grid,.bottom{grid-template-columns:1fr}.panel{padding:17px}.top h1{font-size:26px}}
 </style>
 </head>
 <body><main>
-<div class="top"><div><div class="eyebrow">WORKLOG · MONTHLY</div><h1>工时提交器</h1><div class="sub">添加项目后，只需拖动滑块调整分配比例，系统自动把全部工时分配完。</div></div><div class="monthbox"><input id="month" type="month"></div></div>
+<div class="top"><div><div class="eyebrow">WORKLOG · MONTHLY <span class="version">V1.1.0</span></div><h1>工时提交器</h1><div class="sub">直接调整每个项目的实际工时，系统自动平衡其他项目，确保总工时不变。</div></div><div class="monthbox"><input id="month" type="month"></div></div>
 <section class="grid">
 <div class="panel"><h2>本月工时统计</h2><div class="stats">
 <div class="stat"><small>工作天数</small><strong id="days">—</strong><em>天</em></div>
@@ -41,10 +41,11 @@ main{max-width:1120px;margin:36px auto;padding:0 22px 50px}.top{display:flex;jus
 </main>
 <script>
 const $=id=>document.getElementById(id),colors=['#4776e6','#16a085','#f39c45','#8e6bd8','#e76f76','#39a6c8','#8a9b3f','#d17bba','#63738a','#c18b45'];
-let projects=[];const today=new Date();$('month').value=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
+let projects=[],capacityHours=0;
+const today=new Date();$('month').value=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
 let activeMonth=$('month').value;
-function saveProjects(){try{localStorage.setItem('worklog_projects_'+activeMonth,JSON.stringify(projects.map(({code,alias,weight})=>({code,alias,weight}))))}catch(e){console.warn('项目数据保存失败',e)}}
-function loadProjects(month){try{const data=JSON.parse(localStorage.getItem('worklog_projects_'+month)||'[]');projects=Array.isArray(data)?data.filter(p=>p&&typeof p.code==='string').map((p,i)=>({id:Date.now()+i+Math.random(),code:p.code,alias:String(p.alias||''),weight:Math.max(0,Math.min(100,Number(p.weight)||0))})):[]}catch(e){projects=[]}}
+function saveProjects(){try{localStorage.setItem('worklog_projects_'+activeMonth,JSON.stringify(projects.map(p=>({code:p.code,alias:p.alias,hours:p.hours}))))}catch(e){console.warn('项目数据保存失败',e)}}
+function loadProjects(month){try{const data=JSON.parse(localStorage.getItem('worklog_projects_'+month)||'[]');projects=Array.isArray(data)?data.filter(p=>p&&typeof p.code==='string').map((p,i)=>({id:Date.now()+i+Math.random(),code:p.code,alias:String(p.alias||''),hours:Number.isFinite(Number(p.hours))?Math.max(0,Math.round(Number(p.hours))):0,legacyWeight:p.hours===undefined?Math.max(0,Number(p.weight)||0):null})):[]}catch(e){projects=[]}}
 const holidayDates2026=['2026-01-01','2026-01-02','2026-01-03','2026-02-15','2026-02-16','2026-02-17','2026-02-18','2026-02-19','2026-02-20','2026-02-21','2026-02-22','2026-02-23','2026-04-04','2026-04-05','2026-04-06','2026-05-01','2026-05-02','2026-05-03','2026-05-04','2026-05-05','2026-06-19','2026-06-20','2026-06-21','2026-09-25','2026-09-26','2026-09-27','2026-10-01','2026-10-02','2026-10-03','2026-10-04','2026-10-05','2026-10-06','2026-10-07'];
 const makeupDates2026=['2026-01-04','2026-02-14','2026-02-28','2026-05-09','2026-09-20','2026-10-10'];
 $('holidays').value=localStorage.getItem('worklog_holidays')??holidayDates2026.join('\n');$('workdays').value=localStorage.getItem('worklog_makeup')??makeupDates2026.join('\n');
@@ -58,42 +59,73 @@ function baseWorkdays(){
  if(ws.has(key))work++;else if(hs.has(key))holiday++;else if(we)weekend++;else work++;}
  return {work,weekend,holiday};
 }
-let capacityHours=0;
+function fmt(n){return String(Math.round(Number(n)||0));}
+// 整数小时分配：按权重分配，余数按最大余数法补齐，保证总和严格相等。
+function splitHours(total,weights){
+ if(!weights.length)return [];
+ const valid=weights.map(x=>Math.max(0,Number(x)||0)),sum=valid.reduce((a,b)=>a+b,0),w=sum===0?valid.map(()=>1):valid;
+ const denominator=w.reduce((a,b)=>a+b,0),raw=w.map(x=>total*x/denominator),base=raw.map(Math.floor);
+ let left=total-base.reduce((a,b)=>a+b,0);
+ const order=raw.map((v,i)=>({i,frac:v-base[i]})).sort((a,b)=>b.frac-a.frac);
+ for(let i=0;i<left;i++)base[order[i].i]++;
+ return base;
+}
+function normalizeAllocation(){
+ if(!projects.length)return;
+ const legacy=projects.some(p=>p.legacyWeight!==null&&p.legacyWeight!==undefined);
+ const weights=legacy?projects.map(p=>p.legacyWeight??p.hours):projects.map(p=>p.hours);
+ const sum=weights.reduce((a,b)=>a+b,0);
+ if(legacy||projects.reduce((a,p)=>a+p.hours,0)!==capacityHours){
+  const next=splitHours(capacityHours,weights);
+  projects.forEach((p,i)=>{p.hours=next[i];delete p.legacyWeight;});
+ }
+}
 function recalc(){
  const b=baseWorkdays();let raw=$('workdayOverride').value.trim(),days=raw===''?b.work:Number(raw);if(!Number.isFinite(days)||days<0)days=b.work;
  let leave=Number($('leaveDays').value)||0;leave=Math.max(0,Math.round(leave*2)/2);if(leave>days)leave=days;$('leaveDays').value=leave;
- capacityHours=Math.max(0,days*8-leave*8);
- $('days').textContent=fmt(days);$('capacity').textContent=fmt(capacityHours);$('weekends').textContent=b.weekend;$('holidaysCount').textContent=b.holiday;render();
+ capacityHours=Math.max(0,Math.round(days*8-leave*8));
+ $('days').textContent=String(days);$('capacity').textContent=fmt(capacityHours);$('weekends').textContent=b.weekend;$('holidaysCount').textContent=b.holiday;
+ normalizeAllocation();saveProjects();render();
 }
-function fmt(n){return Number(n.toFixed(2)).toString();}
-function calcHours(){
- if(!projects.length)return [];
- const w=projects.map(p=>Math.max(0,Number(p.weight)||0)),sum=w.reduce((a,b)=>a+b,0),weights=sum===0?w.map(()=>1):w,total=weights.reduce((a,b)=>a+b,0);
- const units=Math.round(capacityHours*2),raw=weights.map(x=>units*x/total),base=raw.map(Math.floor);let left=units-base.reduce((a,b)=>a+b,0);
- const order=raw.map((v,i)=>({i,frac:v-Math.floor(v)})).sort((a,b)=>b.frac-a.frac);
- for(let i=0;i<left;i++)base[order[i%order.length].i]++;
- return base.map(v=>v/2);
+function rebalance(){const next=splitHours(capacityHours,projects.map(p=>p.hours));projects.forEach((p,i)=>p.hours=next[i]);}
+function setProjectHours(index,value){
+ if(!projects[index])return;
+ const target=Math.max(0,Math.min(capacityHours,Math.round(Number(value)||0)));
+ const others=projects.map((p,i)=>i===index?null:i).filter(i=>i!==null);
+ projects[index].hours=target;
+ if(others.length){
+  const remainder=capacityHours-target,distributed=splitHours(remainder,others.map(i=>projects[i].hours));
+  others.forEach((i,k)=>projects[i].hours=distributed[k]);
+ }
+ saveProjects();updateLive();
 }
 function addProject(code,alias){
  code=code.trim();alias=alias.trim();if(!code)return;if(projects.some(p=>p.code===code)){alert('这个项目号已经添加');return;}
- projects.push({id:Date.now()+Math.random(),code,alias,weight:100});saveProjects();render();
+ projects.push({id:Date.now()+Math.random(),code,alias,hours:0});
+ rebalance();saveProjects();render();
 }
 function render(){
- const hours=calcHours();$('assigned').textContent=fmt(hours.reduce((a,b)=>a+b,0))+'h';$('remaining').textContent=fmt(capacityHours)+'h';$('projectCount').textContent=projects.length+' 个项目';$('projects').innerHTML='';
- if(!projects.length)$('projects').innerHTML='<div class="empty">添加项目后即可拖动滑块分配工时</div>';
+ $('projectCount').textContent=projects.length+' 个项目';$('projects').innerHTML='';
+ if(!projects.length)$('projects').innerHTML='<div class="empty">添加项目后即可分配工时</div>';
  projects.forEach((p,i)=>{
-  const c=colors[i%colors.length],wrap=document.createElement('div');wrap.className='project';
-  wrap.innerHTML=`<div class="projecttop"><div style="min-width:0;flex:1"><div class="projectmeta"><span class="dot" style="background:${c}"></span><span class="code"></span></div><div class="alias"></div></div><div class="hours"><span class="hourvalue">${fmt(hours[i])}</span><small> h</small></div><button class="remove" title="删除项目">×</button></div><input type="range" min="0" max="100" step="1" value="${p.weight}" aria-label="调整项目分配权重"><div class="sliderfoot"><span>分配权重</span><span class="weightvalue">${p.weight}</span></div>`;
+  const color=colors[i%colors.length],wrap=document.createElement('div');wrap.className='project';
+  wrap.innerHTML=`<div class="projecttop"><div style="min-width:0;flex:1"><div class="projectmeta"><span class="dot" style="background:${color}"></span><span class="code"></span></div><div class="alias"></div></div><div class="adjust"><button class="minus" aria-label="减少1小时">−</button><div class="hours"><span class="hourvalue">${fmt(p.hours)}</span><small> h</small></div><button class="plus" aria-label="增加1小时">+</button><button class="remove" title="删除项目" aria-label="删除项目">×</button></div></div><input type="range" min="0" max="${capacityHours}" step="1" value="${p.hours}" aria-label="直接调整项目工时"><div class="sliderfoot"><span>拖动调整实际工时</span><span class="rangevalue">${fmt(p.hours)} / ${fmt(capacityHours)} h</span></div>`;
   wrap.querySelector('.code').textContent=p.code;wrap.querySelector('.alias').textContent=p.alias?'别名：'+p.alias:'';
-  wrap.querySelector('input[type=range]').addEventListener('input',e=>{p.weight=Number(e.target.value);saveProjects();updateLive();wrap.querySelector('.weightvalue').textContent=p.weight;});
-  wrap.querySelector('.remove').addEventListener('click',()=>{projects=projects.filter(x=>x.id!==p.id);saveProjects();render();});$('projects').appendChild(wrap);
- });updateLive();
+  wrap.querySelector('input[type=range]').addEventListener('input',e=>setProjectHours(i,e.target.value));
+  wrap.querySelector('.minus').addEventListener('click',()=>setProjectHours(i,p.hours-1));
+  wrap.querySelector('.plus').addEventListener('click',()=>setProjectHours(i,p.hours+1));
+  wrap.querySelector('.remove').addEventListener('click',()=>{projects.splice(i,1);if(projects.length)rebalance();saveProjects();render();});
+  $('projects').appendChild(wrap);
+ });
+ updateLive();
 }
 function updateLive(){
- const hours=calcHours(),assigned=hours.reduce((a,b)=>a+b,0);$('assigned').textContent=fmt(assigned)+'h';$('bar').innerHTML='';
- projects.forEach((p,i)=>{if(!hours[i]||capacityHours<=0)return;const s=document.createElement('div');s.className='seg';s.style.width=(hours[i]/capacityHours*100)+'%';s.style.background=colors[i%colors.length];$('bar').appendChild(s);});
- [...$('projects').children].forEach((el,i)=>{const v=el.querySelector('.hourvalue');if(v)v.textContent=fmt(hours[i]);});
- drawDonut(hours,assigned);makeOutput(hours);$('outputStatus').textContent=projects.length?'已自动分配全部 '+fmt(capacityHours)+'h；别名仅用于界面识别':'请先添加项目';
+ const hours=projects.map(p=>p.hours),assigned=hours.reduce((a,b)=>a+b,0);
+ $('assigned').textContent=fmt(assigned)+'h';$('remaining').textContent=fmt(capacityHours)+'h';$('bar').innerHTML='';
+ projects.forEach((p,i)=>{if(!hours[i]||capacityHours<=0)return;const seg=document.createElement('div');seg.className='seg';seg.style.width=(hours[i]/capacityHours*100)+'%';seg.style.background=colors[i%colors.length];$('bar').appendChild(seg);});
+ [...$('projects').children].forEach((el,i)=>{const slider=el.querySelector('input[type=range]');if(slider){slider.max=capacityHours;slider.value=hours[i];}const v=el.querySelector('.hourvalue'),r=el.querySelector('.rangevalue'),minus=el.querySelector('.minus'),plus=el.querySelector('.plus');if(v)v.textContent=fmt(hours[i]);if(r)r.textContent=fmt(hours[i])+' / '+fmt(capacityHours)+' h';if(minus)minus.disabled=hours[i]<=0;if(plus)plus.disabled=hours[i]>=capacityHours;});
+ drawDonut(hours,assigned);makeOutput(hours);
+ $('outputStatus').textContent=projects.length?'已自动分配全部 '+fmt(capacityHours)+'h；每次调整均保持总工时不变':'请先添加项目';
  $('copy').disabled=projects.length===0||capacityHours<=0;$('copy').style.opacity=$('copy').disabled?'.45':'1';
 }
 function drawDonut(hours,total){
@@ -113,10 +145,6 @@ $('leaveDays').addEventListener('input',()=>{localStorage.setItem('worklog_leave
 $('holidays').addEventListener('input',()=>{localStorage.setItem('worklog_holidays',$('holidays').value);recalc();});
 $('workdays').addEventListener('input',()=>{localStorage.setItem('worklog_makeup',$('workdays').value);recalc();});
 $('copy').addEventListener('click',async()=>{if(!projects.length||capacityHours<=0)return;try{await navigator.clipboard.writeText($('output').value);$('outputStatus').textContent='已复制到剪贴板';}catch(e){$('output').select();document.execCommand('copy');$('outputStatus').textContent='已复制到剪贴板';}});
-// 页面启动时先恢复当前月份的项目与分配权重，再绘制界面
-loadProjects(activeMonth);
-readMonthSettings();
-recalc();
-// 关闭或刷新页面前再保存一次，作为额外保险
+loadProjects(activeMonth);readMonthSettings();recalc();
 window.addEventListener('pagehide',saveProjects);
 </script></body></html>
