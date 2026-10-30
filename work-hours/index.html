@@ -107,11 +107,16 @@ function drawDonut(hours,total){
 function makeOutput(hours){const sorted=projects.map((p,i)=>({code:p.code,hours:hours[i]})).filter(p=>p.hours>0).sort((a,b)=>a.code.localeCompare(b.code,'zh'));$('output').value=sorted.map(p=>`${p.code}\t${fmt(p.hours)}h`).join('\n');}
 $('add').addEventListener('click',()=>{addProject($('newCode').value,$('newAlias').value);$('newCode').value='';$('newAlias').value='';$('newCode').focus();});
 $('newCode').addEventListener('keydown',e=>{if(e.key==='Enter')$('add').click();});$('newAlias').addEventListener('keydown',e=>{if(e.key==='Enter')$('add').click();});
-$('month').addEventListener('change',()=>{saveProjects();activeMonth=$('month').value;loadProjects(activeMonth);loadProjects(activeMonth);readMonthSettings();recalc();});
+$('month').addEventListener('change',()=>{saveProjects();activeMonth=$('month').value;loadProjects(activeMonth);readMonthSettings();recalc();});
 $('workdayOverride').addEventListener('input',()=>{localStorage.setItem('worklog_override_'+monthKey(),$('workdayOverride').value);recalc();});
 $('leaveDays').addEventListener('input',()=>{localStorage.setItem('worklog_leave_'+monthKey(),$('leaveDays').value);recalc();});
 $('holidays').addEventListener('input',()=>{localStorage.setItem('worklog_holidays',$('holidays').value);recalc();});
 $('workdays').addEventListener('input',()=>{localStorage.setItem('worklog_makeup',$('workdays').value);recalc();});
 $('copy').addEventListener('click',async()=>{if(!projects.length||capacityHours<=0)return;try{await navigator.clipboard.writeText($('output').value);$('outputStatus').textContent='已复制到剪贴板';}catch(e){$('output').select();document.execCommand('copy');$('outputStatus').textContent='已复制到剪贴板';}});
-readMonthSettings();recalc();
+// 页面启动时先恢复当前月份的项目与分配权重，再绘制界面
+loadProjects(activeMonth);
+readMonthSettings();
+recalc();
+// 关闭或刷新页面前再保存一次，作为额外保险
+window.addEventListener('pagehide',saveProjects);
 </script></body></html>
