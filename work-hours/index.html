@@ -42,6 +42,9 @@ main{max-width:1120px;margin:36px auto;padding:0 22px 50px}.top{display:flex;jus
 <script>
 const $=id=>document.getElementById(id),colors=['#4776e6','#16a085','#f39c45','#8e6bd8','#e76f76','#39a6c8','#8a9b3f','#d17bba','#63738a','#c18b45'];
 let projects=[];const today=new Date();$('month').value=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
+let activeMonth=$('month').value;
+function saveProjects(){try{localStorage.setItem('worklog_projects_'+activeMonth,JSON.stringify(projects.map(({code,alias,weight})=>({code,alias,weight}))))}catch(e){console.warn('项目数据保存失败',e)}}
+function loadProjects(month){try{const data=JSON.parse(localStorage.getItem('worklog_projects_'+month)||'[]');projects=Array.isArray(data)?data.filter(p=>p&&typeof p.code==='string').map((p,i)=>({id:Date.now()+i+Math.random(),code:p.code,alias:String(p.alias||''),weight:Math.max(0,Math.min(100,Number(p.weight)||0))})):[]}catch(e){projects=[]}}
 const holidayDates2026=['2026-01-01','2026-01-02','2026-01-03','2026-02-15','2026-02-16','2026-02-17','2026-02-18','2026-02-19','2026-02-20','2026-02-21','2026-02-22','2026-02-23','2026-04-04','2026-04-05','2026-04-06','2026-05-01','2026-05-02','2026-05-03','2026-05-04','2026-05-05','2026-06-19','2026-06-20','2026-06-21','2026-09-25','2026-09-26','2026-09-27','2026-10-01','2026-10-02','2026-10-03','2026-10-04','2026-10-05','2026-10-06','2026-10-07'];
 const makeupDates2026=['2026-01-04','2026-02-14','2026-02-28','2026-05-09','2026-09-20','2026-10-10'];
 $('holidays').value=localStorage.getItem('worklog_holidays')??holidayDates2026.join('\n');$('workdays').value=localStorage.getItem('worklog_makeup')??makeupDates2026.join('\n');
@@ -73,7 +76,7 @@ function calcHours(){
 }
 function addProject(code,alias){
  code=code.trim();alias=alias.trim();if(!code)return;if(projects.some(p=>p.code===code)){alert('这个项目号已经添加');return;}
- projects.push({id:Date.now()+Math.random(),code,alias,weight:100});render();
+ projects.push({id:Date.now()+Math.random(),code,alias,weight:100});saveProjects();render();
 }
 function render(){
  const hours=calcHours();$('assigned').textContent=fmt(hours.reduce((a,b)=>a+b,0))+'h';$('remaining').textContent=fmt(capacityHours)+'h';$('projectCount').textContent=projects.length+' 个项目';$('projects').innerHTML='';
@@ -82,8 +85,8 @@ function render(){
   const c=colors[i%colors.length],wrap=document.createElement('div');wrap.className='project';
   wrap.innerHTML=`<div class="projecttop"><div style="min-width:0;flex:1"><div class="projectmeta"><span class="dot" style="background:${c}"></span><span class="code"></span></div><div class="alias"></div></div><div class="hours"><span class="hourvalue">${fmt(hours[i])}</span><small> h</small></div><button class="remove" title="删除项目">×</button></div><input type="range" min="0" max="100" step="1" value="${p.weight}" aria-label="调整项目分配权重"><div class="sliderfoot"><span>分配权重</span><span class="weightvalue">${p.weight}</span></div>`;
   wrap.querySelector('.code').textContent=p.code;wrap.querySelector('.alias').textContent=p.alias?'别名：'+p.alias:'';
-  wrap.querySelector('input[type=range]').addEventListener('input',e=>{p.weight=Number(e.target.value);updateLive();wrap.querySelector('.weightvalue').textContent=p.weight;});
-  wrap.querySelector('.remove').addEventListener('click',()=>{projects=projects.filter(x=>x.id!==p.id);render();});$('projects').appendChild(wrap);
+  wrap.querySelector('input[type=range]').addEventListener('input',e=>{p.weight=Number(e.target.value);saveProjects();updateLive();wrap.querySelector('.weightvalue').textContent=p.weight;});
+  wrap.querySelector('.remove').addEventListener('click',()=>{projects=projects.filter(x=>x.id!==p.id);saveProjects();render();});$('projects').appendChild(wrap);
  });updateLive();
 }
 function updateLive(){
@@ -104,7 +107,7 @@ function drawDonut(hours,total){
 function makeOutput(hours){const sorted=projects.map((p,i)=>({code:p.code,hours:hours[i]})).filter(p=>p.hours>0).sort((a,b)=>a.code.localeCompare(b.code,'zh'));$('output').value=sorted.map(p=>`${p.code}\t${fmt(p.hours)}h`).join('\n');}
 $('add').addEventListener('click',()=>{addProject($('newCode').value,$('newAlias').value);$('newCode').value='';$('newAlias').value='';$('newCode').focus();});
 $('newCode').addEventListener('keydown',e=>{if(e.key==='Enter')$('add').click();});$('newAlias').addEventListener('keydown',e=>{if(e.key==='Enter')$('add').click();});
-$('month').addEventListener('change',()=>{readMonthSettings();recalc();});
+$('month').addEventListener('change',()=>{saveProjects();activeMonth=$('month').value;loadProjects(activeMonth);loadProjects(activeMonth);readMonthSettings();recalc();});
 $('workdayOverride').addEventListener('input',()=>{localStorage.setItem('worklog_override_'+monthKey(),$('workdayOverride').value);recalc();});
 $('leaveDays').addEventListener('input',()=>{localStorage.setItem('worklog_leave_'+monthKey(),$('leaveDays').value);recalc();});
 $('holidays').addEventListener('input',()=>{localStorage.setItem('worklog_holidays',$('holidays').value);recalc();});
