@@ -6,7 +6,8 @@
 <style>
 :root{--bg:#f5f7fb;--panel:#fff;--ink:#182230;--muted:#718096;--line:#e7ebf2;--blue:#4776e6;--shadow:0 8px 28px rgba(31,48,80,.07)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
-main{max-width:1120px;margin:36px auto;padding:0 22px 50px}.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:24px}.eyebrow{color:var(--blue);font-weight:700;font-size:12px;letter-spacing:1.5px}.version{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:99px;background:#eaf0ff;color:#315ecb;font-size:10px;letter-spacing:.4px;vertical-align:1px}.top h1{font-size:30px;margin:4px 0 0}.sub{color:var(--muted);margin-top:5px}.monthbox,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.monthbox{padding:10px 14px}input,textarea,button{font:inherit}input[type=month]{border:0;font-weight:650;background:transparent;outline:none;color:var(--ink)}
+main{max-width:1120px;margin:36px auto;padding:0 22px 50px}.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:24px}.eyebrow{color:var(--blue);font-weight:700;font-size:12px;letter-spacing:1.5px}.version{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:99px;background:#eaf0ff;color:#315ecb;font-size:10px;letter-spacing:.4px;vertical-align:1px}.top h1{font-size:30px;margin:4px 0 0}.sub{color:var(--muted);margin-top:5px}.monthbox,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.monthbox{padding:10px 14px}input,textarea,button{font:inherit}input[type=month]{border:0;font-weight:650;background:transparent;outline:none;color:var(--ink)}.monthbox{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.import-btn{white-space:nowrap}
+.modal-backdrop{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(20,30,48,.42);backdrop-filter:blur(3px)}.modal-backdrop.show{display:flex}.modal{width:min(440px,100%);background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 24px 70px rgba(20,30,48,.22)}.modal h2{font-size:19px;margin:0 0 10px}.modal p{margin:0;color:#536174;line-height:1.7}.modal .warning{margin-top:12px;padding:11px 12px;background:#fff8e9;border-radius:10px;color:#805b19;font-size:13px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}.btn.neutral{background:#f0f2f6;color:#465366}.btn.danger{background:#c94b4b;color:#fff}
 .grid{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}.panel{padding:22px}.panel h2{font-size:17px;margin:0 0 16px}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{padding:15px;background:#f7f9fd;border-radius:12px}.stat small{display:block;color:var(--muted);margin-bottom:5px}.stat strong{font-size:26px}.stat em{font-size:13px;font-style:normal;color:var(--muted);margin-left:4px}
 .fieldlabel{font-size:13px;color:#536174;font-weight:650;display:block;margin:12px 0 7px}.holiday textarea{width:100%;min-height:66px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none}.hint{font-size:12px;color:var(--muted);margin-top:6px}.override{display:flex;align-items:center;gap:9px;margin-top:15px;padding:12px;background:#f7f9fd;border-radius:11px}.override label{font-size:13px;font-weight:650;flex:1}.override input{width:92px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;text-align:right}
 .project-head,.projecttop,.totals,.outactions{display:flex;align-items:center;justify-content:space-between;gap:10px}.btn{border:0;border-radius:10px;padding:9px 13px;background:#edf2ff;color:#315ecb;font-weight:650;cursor:pointer}.btn.primary{background:var(--blue);color:#fff}.addrow{display:flex;gap:8px;margin:14px 0 18px}.addrow input{min-width:0;flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none}
@@ -17,7 +18,7 @@ main{max-width:1120px;margin:36px auto;padding:0 22px 50px}.top{display:flex;jus
 </style>
 </head>
 <body><main>
-<div class="top"><div><div class="eyebrow">WORKLOG · MONTHLY <span class="version">V1.1.0</span></div><h1>工时提交器</h1><div class="sub">直接调整每个项目的实际工时，系统自动平衡其他项目，确保总工时不变。</div></div><div class="monthbox"><input id="month" type="month"></div></div>
+<div class="top"><div><div class="eyebrow">WORKLOG · MONTHLY <span class="version">V1.1.0</span></div><h1>工时提交器</h1><div class="sub">直接调整每个项目的实际工时，系统自动平衡其他项目，确保总工时不变。</div></div><div class="monthbox"><input id="month" type="month"><button class="btn import-btn" id="importPrevious">导入上月数据</button></div></div>
 <section class="grid">
 <div class="panel"><h2>本月工时统计</h2><div class="stats">
 <div class="stat"><small>工作天数</small><strong id="days">—</strong><em>天</em></div>
@@ -39,6 +40,14 @@ main{max-width:1120px;margin:36px auto;padding:0 22px 50px}.top{display:flex;jus
 <section class="bottom"><div class="panel"><h2>分配占比</h2><div class="chartwrap"><svg id="donut" viewBox="0 0 220 220" width="210" height="210"></svg></div><div class="legend" id="legend"></div></div>
 <div class="panel"><h2>提交文案预览</h2><textarea class="output" id="output" readonly spellcheck="false"></textarea><div class="outactions"><span class="status" id="outputStatus">文案只包含项目号和工时，不包含别名</span><button class="btn primary" id="copy">复制提交文案</button></div></div></section>
 </main>
+<div class="modal-backdrop" id="importModal" role="presentation">
+ <section class="modal" role="dialog" aria-modal="true" aria-labelledby="importTitle" aria-describedby="importDescription">
+  <h2 id="importTitle">导入上个月的数据？</h2>
+  <p id="importDescription"></p>
+  <div class="warning">此操作会覆盖本月已有的项目和工时设置，且无法自动撤销。请确认后再继续。</div>
+  <div class="modal-actions"><button class="btn neutral" id="cancelImport">取消</button><button class="btn danger" id="confirmImport">确认导入并覆盖</button></div>
+ </section>
+</div>
 <script>
 const $=id=>document.getElementById(id),colors=['#4776e6','#16a085','#f39c45','#8e6bd8','#e76f76','#39a6c8','#8a9b3f','#d17bba','#63738a','#c18b45'];
 let projects=[],capacityHours=0;
@@ -52,6 +61,52 @@ $('holidays').value=localStorage.getItem('worklog_holidays')??holidayDates2026.j
 function dateSet(id){return new Set($(id).value.split(/\s+/).map(s=>s.trim()).filter(s=>/^\d{4}-\d{2}-\d{2}$/.test(s)));}
 function monthKey(){return $('month').value;}
 function readMonthSettings(){const k=monthKey();$('workdayOverride').value=localStorage.getItem('worklog_override_'+k)??'';$('leaveDays').value=localStorage.getItem('worklog_leave_'+k)??'0';}
+function previousMonthKey(month){
+ const [y,m]=month.split('-').map(Number);if(!y||!m)return '';
+ const d=new Date(Date.UTC(y,m-2,1));
+ return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}`;
+}
+function monthLabel(key){const [y,m]=key.split('-').map(Number);return `${y}年${m}月`;}
+let importSourceMonth='';
+function closeImportModal(){$('importModal').classList.remove('show');}
+function openImportModal(){
+ const current=monthKey();importSourceMonth=previousMonthKey(current);
+ if(!importSourceMonth){$('importDescription').textContent='请先选择有效的月份。';$('confirmImport').disabled=true;}
+ else{
+  const projectKey='worklog_projects_'+importSourceMonth;
+  const overrideKey='worklog_override_'+importSourceMonth;
+  const leaveKey='worklog_leave_'+importSourceMonth;
+  const hasData=[projectKey,overrideKey,leaveKey].some(k=>localStorage.getItem(k)!==null);
+  $('importDescription').textContent=hasData
+   ?`将把 ${monthLabel(importSourceMonth)} 的数据导入 ${monthLabel(current)}。`
+   :`没有找到 ${monthLabel(importSourceMonth)} 的已保存数据，无法导入。`;
+  $('confirmImport').disabled=!hasData;
+ }
+ $('importModal').classList.add('show');
+ $('cancelImport').focus();
+}
+$('importPrevious').addEventListener('click',openImportModal);
+$('cancelImport').addEventListener('click',closeImportModal);
+$('importModal').addEventListener('click',e=>{if(e.target===$('importModal'))closeImportModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('importModal').classList.contains('show'))closeImportModal();});
+$('confirmImport').addEventListener('click',()=>{
+ if(!importSourceMonth||$('confirmImport').disabled)return;
+ const sourceProjectKey='worklog_projects_'+importSourceMonth;
+ const targetProjectKey='worklog_projects_'+monthKey();
+ const sourceProjects=localStorage.getItem(sourceProjectKey);
+ let parsed;
+ try{parsed=sourceProjects===null?[]:JSON.parse(sourceProjects);if(!Array.isArray(parsed))throw new Error('invalid project data');}
+ catch(e){$('importDescription').textContent='上个月的项目数据格式异常，未执行导入。';$('confirmImport').disabled=true;return;}
+ saveProjects();
+ localStorage.setItem(targetProjectKey,JSON.stringify(parsed));
+ ['override','leave'].forEach(name=>{
+  const from='worklog_'+name+'_'+importSourceMonth,to='worklog_'+name+'_'+monthKey();
+  const value=localStorage.getItem(from);
+  if(value===null)localStorage.removeItem(to);else localStorage.setItem(to,value);
+ });
+ activeMonth=monthKey();loadProjects(activeMonth);readMonthSettings();recalc();closeImportModal();
+});
+
 function baseWorkdays(){
  const [y,m]=monthKey().split('-').map(Number);if(!y||!m)return {work:0,weekend:0,holiday:0};
  const count=new Date(y,m,0).getDate(),hs=dateSet('holidays'),ws=dateSet('workdays');let work=0,weekend=0,holiday=0;
